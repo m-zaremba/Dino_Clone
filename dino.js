@@ -19,7 +19,9 @@ export function setupDino() {
   setCustomProperty(dinoElement, "--bottom", 0);
 
   document.removeEventListener("keydown", onJump); // Remove event after game over/restart
+  document.removeEventListener("touchstart", onJump, false);
   document.addEventListener("keydown", onJump);
+  document.addEventListener("touchstart", onJump, false);
 };
 
 export function updateDino(delta, speedScale) {
@@ -55,8 +57,16 @@ function handleJump(delta) {
 };
 
 function onJump(event) {
-  if (event.code !== "Space" || isJumping) return;
+  if (isJumping) return;
 
   yVelocity = JUMP_SPEED;
   isJumping = true;
+};
+
+export function getDinoRect() {
+  return dinoElement.getBoundingClientRect();
+}
+
+export function setDinoLose() {
+  dinoElement.src = "img/dino-lose.png";
 }

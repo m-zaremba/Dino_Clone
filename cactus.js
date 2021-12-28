@@ -34,6 +34,13 @@ export function updateCactus(delta, speedScale) {
   nextCactusTime -= delta; // 'Countdown' till next cactus appears on screen
 };
 
+// Get dimensions of the cactus
+export function getCactusRects() {
+  return [...document.querySelectorAll("[data-cactus]")].map((cactus) => {
+    return cactus.getBoundingClientRect();
+  });
+};
+
 function createCactus() {
   const cactus = document.createElement("img");
   cactus.dataset.cactus = true;
