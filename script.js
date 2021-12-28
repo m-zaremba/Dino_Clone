@@ -1,4 +1,5 @@
 import { updateGround, setupGround } from "./ground.js";
+import { updateDino, setupDino } from "./dino.js";
 
 const worldElement = document.querySelector("[data-world]");
 const scoreElement = document.querySelector("[data-score]");
@@ -17,12 +18,13 @@ function update(time) {
     lastTime = time;
     window.requestAnimationFrame(update);
     return;
-  }
+  };
   const delta = time - lastTime;
 
   lastTime = time;
   
   updateGround(delta, speedScale);
+  updateDino(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
 
@@ -45,7 +47,7 @@ function setPixelToWorldScale() {
     worldPixelScale = window.innerWidth / WORLD_WIDTH;
   } else {
     worldPixelScale = window.innerHeight / WORLD_HEIGHT;
-  }
+  };
   
   worldElement.style.width = `${WORLD_WIDTH * worldPixelScale}px`;
   worldElement.style.height = `${WORLD_HEIGHT * worldPixelScale}px`;
@@ -56,9 +58,10 @@ function handleStart() {
   speedScale = 1;
   score = 0;
   setupGround();
+  setupDino();
   startScreenElement.classList.add("hide");
   window.requestAnimationFrame(update);
-}
+};
 
 window.addEventListener("keydown", handleStart, {once: true});
 window.addEventListener("resize", setPixelToWorldScale);
