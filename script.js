@@ -40,7 +40,7 @@ function updateSpeedScale(delta) {
 
 function updateScore(delta) {
   score += delta * 0.01;
-  scoreElement.innerHTML = Math.floor(score);
+  scoreElement.innerHTML = `SCORE: ${Math.floor(score)}`;
 }
 
 function setPixelToWorldScale() {
@@ -89,6 +89,7 @@ function isCollision(rect1, rect2) {
 
 function handleLose() {
   setDinoLose();
+  isPlaying = false;
   // Avoid restarting the game right after you lose
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, {once: true});

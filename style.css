@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 *,
 *::before,
 *::after {
@@ -6,6 +8,8 @@
 }
 
 body {
+  font-family: "Press Start 2P";
+  color: #535353;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -23,11 +27,13 @@ body {
   font-size: 3vmin;
   top: 1vmin;
   right: 1vmin;
+  text-align: left;
+  min-width: 25%;
 }
 
 .start-screen {
   position: absolute;
-  font-size: 5vmin;
+  font-size: 4vmin;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -54,8 +60,9 @@ body {
 }
 
 .cactus {
+  --height: 30;
   position: absolute;
   left: calc(var(--left) * 1%);
-  height: 30%;
+  height: calc(var(--height) * 1%);
   bottom: 0;
 }

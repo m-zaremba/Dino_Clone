@@ -6,7 +6,7 @@ import {
 
 const groundElements = document.querySelectorAll("[data-ground]");
 
-const SPEED = 0.05;
+const SPEED = 0.08;
 
 export function setupGround() {
   setCustomProperty(groundElements[0], "--left", 0);

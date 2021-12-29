@@ -1,8 +1,10 @@
 import { setCustomProperty, incrementCustomProperty, getCustomProperty } from "./updateCustomProperty.js";
 
-const SPEED = 0.05;
-const CACTUS_INTERVAL_MIN = 500;
+const SPEED = 0.08;
+const CACTUS_INTERVAL_MIN = 900;
 const CACTUS_INTERVAL_MAX = 2000;
+const CACTUS_HEIGHT_MIN = 20;
+const CACTUS_HEIGHT_MAX = 42;
 const worldElement = document.querySelector("[data-world]");
 
 let nextCactusTime;
@@ -47,6 +49,7 @@ function createCactus() {
   cactus.src = "img/cactus.png";
   cactus.classList.add("cactus");
   setCustomProperty(cactus, "--left", 100);
+  setCustomProperty(cactus, "--height", randomNumberBetween(CACTUS_HEIGHT_MIN, CACTUS_HEIGHT_MAX));
   worldElement.append(cactus);
 };
 
