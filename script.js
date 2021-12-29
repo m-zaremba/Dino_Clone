@@ -1,13 +1,14 @@
 import { updateGround, setupGround } from "./ground.js";
 import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js";
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js";
+import { updateCloud, setupCloud } from "./cloud.js";
 
 const worldElement = document.querySelector("[data-world]");
 const scoreElement = document.querySelector("[data-score]");
 const startScreenElement = document.querySelector("[data-start-screen]");
 
 const WORLD_WIDTH = 100;
-const WORLD_HEIGHT = 30;
+const WORLD_HEIGHT = 40;
 const SPEED_SCALE_INCREASE = 0.00001;
 
 let lastTime;
@@ -28,6 +29,7 @@ function update(time) {
   updateGround(delta, speedScale);
   updateDino(delta, speedScale);
   updateCactus(delta, speedScale);
+  updateCloud(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
   if (checkLose()) return handleLose();
@@ -67,6 +69,7 @@ function handleStart() {
   setupGround();
   setupDino();
   setupCactus();
+  setupCloud();
   startScreenElement.classList.add("hide");
   window.requestAnimationFrame(update);
 }
