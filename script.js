@@ -7,9 +7,11 @@ const worldElement = document.querySelector("[data-world]");
 const scoreElement = document.querySelector("[data-score]");
 const startScreenElement = document.querySelector("[data-start-screen]");
 const hiScoreElement = document.querySelector("[data-hiscore]");
+const dieSound = document.querySelector("[data-die]");
+const jumpSound = document.querySelector("[data-jump]");
 
 const WORLD_WIDTH = 100;
-const WORLD_HEIGHT = 40;
+const WORLD_HEIGHT = 30;
 const SPEED_SCALE_INCREASE = 0.00001;
 
 let lastTime;
@@ -114,6 +116,7 @@ function isCollision(rect1, rect2) {
 function handleLose() {
   setDinoLose();
   saveHiScore();
+  dieSound.play();
   isPlaying = false;
   // Avoid restarting the game right after you lose
   setTimeout(() => {
@@ -127,5 +130,8 @@ window.addEventListener("keydown", handleStart, { once: true });
 window.addEventListener("touchstart", handleStart, { once: true });
 window.addEventListener("resize", setPixelToWorldScale);
 
+jumpSound.volume = 0.1;
+dieSound.volume = 0.1;
 setPixelToWorldScale();
 loadHiScore();
+
