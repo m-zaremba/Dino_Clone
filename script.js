@@ -6,6 +6,7 @@ import { updateCloud, setupCloud } from "./cloud.js";
 const worldElement = document.querySelector("[data-world]");
 const scoreElement = document.querySelector("[data-score]");
 const startScreenElement = document.querySelector("[data-start-screen]");
+const hiScoreElement = document.querySelector("[data-hiscore]");
 
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 40;
@@ -14,6 +15,7 @@ const SPEED_SCALE_INCREASE = 0.00001;
 let lastTime;
 let speedScale;
 let score;
+let hiScore;
 let isPlaying = false;
 
 function update(time) {
@@ -40,9 +42,27 @@ function updateSpeedScale(delta) {
   speedScale += delta * SPEED_SCALE_INCREASE;
 }
 
+// Format score to consist of 5 digits with leading zeros and show it on screen
+function formatScoreValue(element, score) {
+  element.textContent = ((element === hiScoreElement) ? "HI: " : "SCORE: ") + Math.floor(score).toString().padStart(5, "0");
+}
+
+function loadHiScore() {
+  if (localStorage.hiScore) {
+    hiScore = localStorage.hiScore;
+  }
+  formatScoreValue(hiScoreElement, hiScore);
+}
+
+function saveHiScore() {
+  if (score > hiScore) {
+    localStorage.setItem('hiScore', JSON.stringify(Math.floor(score)));
+  }
+}
+
 function updateScore(delta) {
   score += delta * 0.01;
-  scoreElement.innerHTML = `SCORE: ${Math.floor(score)}`;
+  formatScoreValue(scoreElement, score);
 }
 
 function setPixelToWorldScale() {
@@ -70,6 +90,7 @@ function handleStart() {
   setupDino();
   setupCactus();
   setupCloud();
+  loadHiScore();
   startScreenElement.classList.add("hide");
   window.requestAnimationFrame(update);
 }
@@ -83,19 +104,20 @@ function checkLose() {
 
 function isCollision(rect1, rect2) {
   return (
-    (rect1.left + 10) < rect2.right &&
-    rect1.top +20 < rect2.bottom &&
+    rect1.left + 10 < rect2.right &&
+    rect1.top + 20 < rect2.bottom &&
     rect1.right > rect2.left &&
-    rect1.bottom > rect2.top -10
+    rect1.bottom > rect2.top - 10
   );
 }
 
 function handleLose() {
   setDinoLose();
+  saveHiScore();
   isPlaying = false;
   // Avoid restarting the game right after you lose
   setTimeout(() => {
-    document.addEventListener("keydown", handleStart, {once: true});
+    document.addEventListener("keydown", handleStart, { once: true });
     window.addEventListener("touchstart", handleStart, { once: true });
     startScreenElement.classList.remove("hide");
   }, 500);
@@ -106,3 +128,4 @@ window.addEventListener("touchstart", handleStart, { once: true });
 window.addEventListener("resize", setPixelToWorldScale);
 
 setPixelToWorldScale();
+loadHiScore();

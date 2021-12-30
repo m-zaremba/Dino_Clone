@@ -31,6 +31,15 @@ body {
   min-width: 25%;
 }
 
+.hi-score {
+  position: absolute;
+  font-size: 3vmin;
+  top: 1vmin;
+  right: 45vmin;
+  text-align: left;
+  min-width: 25%;
+}
+
 .start-screen {
   position: absolute;
   font-size: 4vmin;
