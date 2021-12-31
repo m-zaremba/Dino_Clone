@@ -26,15 +26,13 @@ export function setupDino() {
   document.removeEventListener("keyup", handleBow);
   document.removeEventListener("touchstart", onJump);
   document.removeEventListener("keydown", (event) => {
-      onJump(event);
-      handleBow(event);
-    }
-  );
+    onJump(event);
+    handleBow(event);
+  });
   document.addEventListener("keydown", (event) => {
-      onJump(event);
-      handleBow(event);
-    }
-  );
+    onJump(event);
+    handleBow(event);
+  });
   document.addEventListener("keyup", handleBow);
   document.addEventListener("touchstart", onJump);
 }
@@ -65,8 +63,7 @@ function handleJump(delta) {
   if (getCustomProperty(dinoElement, "--bottom") <= 0) {
     setCustomProperty(dinoElement, "--bottom", 0);
     isJumping = false;
-  }
-
+  };
   yVelocity -= GRAVITY * delta;
 }
 
@@ -77,7 +74,7 @@ function onJump(event) {
     jumpSound.play();
     yVelocity = JUMP_SPEED;
     isJumping = true;
-  }
+  };
 }
 
 function handleBow(event) {

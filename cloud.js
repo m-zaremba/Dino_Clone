@@ -17,7 +17,7 @@ export function setupCloud() {
   document.querySelectorAll("[data-cloud]").forEach((cloud) => {
     cloud.remove();
   });
-};
+}
 
 export function updateCloud(delta, speedScale) {
   document.querySelectorAll("[data-cloud]").forEach((cloud) => {
@@ -30,11 +30,10 @@ export function updateCloud(delta, speedScale) {
   if (nextCloudTime <= 0) {
     createCloud();
     nextCloudTime =
-      randomNumberBetween(CLOUD_INTERVAL_MIN, CLOUD_INTERVAL_MAX) /
-      speedScale; // Adjust cloud appear rate for increased speed of the game
-  };
+      randomNumberBetween(CLOUD_INTERVAL_MIN, CLOUD_INTERVAL_MAX) / speedScale; // Adjust cloud appear rate for increased speed of the game
+  }
   nextCloudTime -= delta; // 'Countdown' till next cloud appears on screen
-};
+}
 
 function createCloud() {
   const cloud = document.createElement("img");
@@ -45,8 +44,8 @@ function createCloud() {
   setCustomProperty(cloud, "--bottom", randomNumberBetween(CLOUD_HEIGHT_MIN, CLOUD_HEIGHT_MAX));
   setCustomProperty(cloud, "--width", randomNumberBetween(CLOUD_WIDTH_MIN, CLOUD_WIDTH_MAX));
   worldElement.append(cloud);
-};
+}
 
 function randomNumberBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}

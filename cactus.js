@@ -15,7 +15,7 @@ export function setupCactus() {
   document.querySelectorAll("[data-cactus]").forEach((cactus) => {
     cactus.remove();
   });
-};
+}
 
 export function updateCactus(delta, speedScale) {
   document.querySelectorAll("[data-cactus]").forEach((cactus) => {
@@ -25,34 +25,32 @@ export function updateCactus(delta, speedScale) {
     }
   });
 
-
-
   if (nextCactusTime <= 0) {
     createCactus();
-    nextCactusTime =
-      randomNumberBetween(CACTUS_INTERVAL_MIN, CACTUS_INTERVAL_MAX) /
-      speedScale; // Adjust cactus appear rate for increased speed of the game
+    // Adjust cactus appear rate for increased speed of the game
+    nextCactusTime = randomNumberBetween(CACTUS_INTERVAL_MIN, CACTUS_INTERVAL_MAX) / speedScale; 
   };
-  nextCactusTime -= delta; // 'Countdown' till next cactus appears on screen
-};
+  // 'Countdown' till next cactus appears on screen
+  nextCactusTime -= delta;
+}
 
 // Get dimensions of the cactus
 export function getCactusRects() {
   return [...document.querySelectorAll("[data-cactus]")].map((cactus) => {
     return cactus.getBoundingClientRect();
   });
-};
+}
 
 function createCactus() {
   const cactus = document.createElement("img");
   cactus.dataset.cactus = true;
-  cactus.src = "img/cactus.png";
+  cactus.src = `img/cactus-${randomNumberBetween(0, 3)}.png`;
   cactus.classList.add("cactus");
   setCustomProperty(cactus, "--left", 100);
   setCustomProperty(cactus, "--height", randomNumberBetween(CACTUS_HEIGHT_MIN, CACTUS_HEIGHT_MAX));
   worldElement.append(cactus);
-};
+}
 
 function randomNumberBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}
