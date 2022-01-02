@@ -97,7 +97,6 @@ function handleStart() {
   setupCactus();
   setupPtero();
   setupCloud();
-  loadHiScore();
   startScreenElement.classList.add("hide");
   window.requestAnimationFrame(update);
 }
@@ -111,17 +110,19 @@ function checkLose() {
 }
 
 function isCollision(rect1, rect2) {
+  console.log('rect1.left', rect1.left);
   return (
-    rect1.left + 10 < rect2.right + 10 && //OK
-    rect1.top < rect2.bottom - 10 && //OK
-    rect1.right - 15 > rect2.left && //OK
-    rect1.bottom > rect2.top
+    rect1.left + 10 < rect2.right + 10 &&
+    rect1.top < rect2.bottom - 30 &&
+    rect1.right - 40 > rect2.left &&
+    rect1.bottom > rect2.top + 34
   );
 }
 
 function handleLose() {
   setDinoLose();
   saveHiScore();
+  loadHiScore();
   dieSound.play();
   isPlaying = false;
   // Avoid restarting the game right after you lose

@@ -56,7 +56,7 @@ function createPtero() {
 function handleFly(ptero, delta, speedScale) {
   if (currentFrameTime >= FRAME_TIME) {
     pteroFrame = (pteroFrame + 1) % PTERO_FRAME_COUNT; // Crete frame loop
-    ptero.src = `img/ptero-${pteroFrame}.png`;
+    ptero.src = `img/ptero-${pteroFrame}.svg`;
     currentFrameTime -= FRAME_TIME; // Reset animation frame value
   }
   currentFrameTime += delta * speedScale;

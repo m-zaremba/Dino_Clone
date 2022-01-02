@@ -44,13 +44,13 @@ export function updateDino(delta, speedScale) {
 
 function handleRunAndBow(delta, speedScale) {
   if (isJumping) {
-    dinoElement.src = "img/dino-stationary.png";
+    dinoElement.src = "img/dino-stationary.svg";
     return;
   }
 
   if (currentFrameTime >= FRAME_TIME) {
     dinoFrame = (dinoFrame + 1) % DINO_FRAME_COUNT; // Crete frame loop
-    dinoElement.src = `img/dino-${isBowing ? "bow" : "run"}-${dinoFrame}.png`;
+    dinoElement.src = `img/dino-${isBowing ? "bow" : "run"}-${dinoFrame}.svg`;
     currentFrameTime -= FRAME_TIME; // Reset animation frame value
   }
   currentFrameTime += delta * speedScale;
@@ -90,5 +90,5 @@ export function getDinoRect() {
 }
 
 export function setDinoLose() {
-  dinoElement.src = "img/dino-lose.png";
+  dinoElement.src = "img/dino-lose.svg";
 }
