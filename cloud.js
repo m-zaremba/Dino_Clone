@@ -38,7 +38,7 @@ export function updateCloud(delta, speedScale) {
 function createCloud() {
   const cloud = document.createElement("img");
   cloud.dataset.cloud = true;
-  cloud.src = "img/cloud.png";
+  cloud.src = "img/cloud.svg";
   cloud.classList.add("cloud");
   setCustomProperty(cloud, "--left", 100);
   setCustomProperty(cloud, "--bottom", randomNumberBetween(CLOUD_HEIGHT_MIN, CLOUD_HEIGHT_MAX));

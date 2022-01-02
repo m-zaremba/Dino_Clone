@@ -44,7 +44,7 @@ export function getCactusRects() {
 function createCactus() {
   const cactus = document.createElement("img");
   cactus.dataset.cactus = true;
-  cactus.src = `img/cactus-${randomNumberBetween(0, 3)}.png`;
+  cactus.src = `img/cactus-${randomNumberBetween(0, 2)}.svg`;
   cactus.classList.add("cactus");
   setCustomProperty(cactus, "--left", 100);
   setCustomProperty(cactus, "--height", randomNumberBetween(CACTUS_HEIGHT_MIN, CACTUS_HEIGHT_MAX));
