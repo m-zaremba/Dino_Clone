@@ -9,6 +9,8 @@ const DINO_FRAME_COUNT = 2;
 const FRAME_TIME = 100;
 
 let isJumping;
+let isPowerjumpActive;
+let superJumpCounter = 2;
 let isBowing;
 let dinoFrame;
 let currentFrameTime;
@@ -22,24 +24,29 @@ export function setupDino() {
   yVelocity = 0;
   setCustomProperty(dinoElement, "--bottom", 0);
 
-  // Remove events after game over/restart
+  // Remove event listeners after game over/restart
   document.removeEventListener("keyup", handleBow);
   document.removeEventListener("touchstart", onJump);
-  document.removeEventListener("keydown", (event) => {
-    onJump(event);
-    handleBow(event);
-  });
-  document.addEventListener("keydown", (event) => {
-    onJump(event);
-    handleBow(event);
-  });
+  document.removeEventListener("keydown", handleKeydown);
+
+  document.addEventListener("keydown", handleKeydown);
   document.addEventListener("keyup", handleBow);
   document.addEventListener("touchstart", onJump);
 }
 
-export function updateDino(delta, speedScale) {
+function handleKeydown(event) {
+  onJump(event, isPowerjumpActive);
+  handleBow(event);
+}
+
+export function updateDino(delta, speedScale, isSuperpowerActive) {
   handleRunAndBow(delta, speedScale);
   handleJump(delta);
+  handleSuperpowers(isSuperpowerActive);
+}
+
+function handleSuperpowers (isSuperpowerActive) {
+  isPowerjumpActive = isSuperpowerActive;
 }
 
 function handleRunAndBow(delta, speedScale) {
@@ -67,13 +74,23 @@ function handleJump(delta) {
   yVelocity -= GRAVITY * delta;
 }
 
-function onJump(event) {
+function superJumpCountUpdate () {
+  if (superJumpCounter === 0) {
+    superJumpCounter = 2;
+  }
+  superJumpCounter -= 1;
+}
+
+function onJump(event, isPowerjumpActive) {
   if (event.code !== "ArrowDown") {
-    if (isJumping) return;
+    if (isJumping && (!isPowerjumpActive || superJumpCounter <= 0)) return;
+    if (isPowerjumpActive) {
+      superJumpCountUpdate();
+    }
 
     jumpSound.play();
-    yVelocity = JUMP_SPEED;
-    isJumping = true;
+      yVelocity = JUMP_SPEED;
+      isJumping = true;
   };
 }
 
@@ -91,4 +108,6 @@ export function getDinoRect() {
 
 export function setDinoLose() {
   dinoElement.src = "img/dino-lose.svg";
+  // Adjust superJumpCounter for restart keypress
+  superJumpCounter = 3;
 }

@@ -1,6 +1,7 @@
 import { updateGround, setupGround } from "./ground.js";
 import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js";
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js";
+import { updatePower, setupPower, getPowerRect } from "./power.js";
 import { updatePtero, setupPtero, getPteroRects } from "./ptero.js";
 import { updateCloud, setupCloud } from "./cloud.js";
 
@@ -20,6 +21,8 @@ let speedScale;
 let score;
 let hiScore;
 let isPlaying = false;
+let isSuperpowerActive = false;
+let superpowerTimeout;
 
 function update(time) {
   if (lastTime == null) {
@@ -32,12 +35,14 @@ function update(time) {
   lastTime = time;
 
   updateGround(delta, speedScale);
-  updateDino(delta, speedScale);
+  updateDino(delta, speedScale, isSuperpowerActive);
   updateCactus(delta, speedScale);
   updateCloud(delta, speedScale);
   updatePtero(delta, speedScale);
+  updatePower(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
+  acquireSuperpower();
   if (checkLose()) return handleLose();
   window.requestAnimationFrame(update);
 }
@@ -96,6 +101,7 @@ function handleStart() {
   setupDino();
   setupCactus();
   setupPtero();
+  setupPower();
   setupCloud();
   startScreenElement.classList.add("hide");
   window.requestAnimationFrame(update);
@@ -109,8 +115,27 @@ function checkLose() {
   return collision;
 }
 
+function cancelSuperpower() {
+  isSuperpowerActive = false;
+}
+
+function setSuperpower() {
+  isSuperpowerActive = true;
+  if(isSuperpowerActive) {
+    superpowerTimeout = setTimeout(cancelSuperpower, 5000);
+  }
+}
+
+function acquireSuperpower() {
+  const dinoRect = getDinoRect();
+  const superpowerAcquired = getPowerRect().some((powerRect) => isCollision(powerRect, dinoRect));
+  if (superpowerAcquired) {
+    setSuperpower();
+    return;
+  }
+}
+
 function isCollision(rect1, rect2) {
-  console.log('rect1.left', rect1.left);
   return (
     rect1.left + 10 < rect2.right + 10 &&
     rect1.top < rect2.bottom - 30 &&
@@ -125,6 +150,8 @@ function handleLose() {
   loadHiScore();
   dieSound.play();
   isPlaying = false;
+  isSuperpowerActive = false;
+  clearTimeout(superpowerTimeout);
   // Avoid restarting the game right after you lose
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, { once: true });

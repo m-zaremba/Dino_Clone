@@ -46,7 +46,7 @@ export function updatePtero(delta, speedScale) {
 function createPtero() {
   const ptero = document.createElement("img");
   ptero.dataset.ptero = true;
-  ptero.src = "img/ptero-1.png";
+  ptero.src = "img/ptero-1.svg";
   ptero.classList.add("ptero");
   setCustomProperty(ptero, "--left", 100);
   setCustomProperty(ptero, "--bottom", randomNumberBetween(PTERO_ALTITUDE_MIN, PTERO_ALTITUDE_MAX));

@@ -93,3 +93,11 @@ body {
   left: calc(var(--left) * 1%);
   bottom: calc(var(--bottom) * 1%);
 }
+
+.power {
+  --bottom: 30;
+  position: absolute;
+  left: calc(var(--left) * 1%);
+  bottom: calc(var(--bottom) * 1%);
+  width: 5%;
+}
