@@ -22,7 +22,8 @@ let score;
 let hiScore;
 let isPlaying = false;
 let isSuperpowerActive = false;
-let superpowerTimeout;
+let isInvincible = false;
+let powerChooser = null;
 
 function update(time) {
   if (lastTime == null) {
@@ -42,7 +43,9 @@ function update(time) {
   updatePower(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
-  acquireSuperpower();
+  if (acquireSuperpower()) {
+    setSuperpower()
+  };
   if (checkLose()) return handleLose();
   window.requestAnimationFrame(update);
 }
@@ -108,6 +111,7 @@ function handleStart() {
 }
 
 function checkLose() {
+  if (isInvincible) return;
   const dinoRect = getDinoRect();
   const collision =
     getCactusRects().some((cactusRect) => isCollision(cactusRect, dinoRect)) ||
@@ -117,22 +121,32 @@ function checkLose() {
 
 function cancelSuperpower() {
   isSuperpowerActive = false;
+  isInvincible = false;
+  powerChooser = null;
 }
 
 function setSuperpower() {
-  isSuperpowerActive = true;
-  if(isSuperpowerActive) {
-    superpowerTimeout = setTimeout(cancelSuperpower, 5000);
-  }
+  if (powerChooser === null) {
+  powerChooser = Math.round(Math.random());
+  };
+
+  if (powerChooser === 0) {
+    isSuperpowerActive = true;
+  } else {
+    isInvincible = true;
+  };
+  
+  setSuperpowerTimeout();
+};
+
+function setSuperpowerTimeout() {
+  setTimeout(cancelSuperpower, 5000);
 }
 
 function acquireSuperpower() {
   const dinoRect = getDinoRect();
   const superpowerAcquired = getPowerRect().some((powerRect) => isCollision(powerRect, dinoRect));
-  if (superpowerAcquired) {
-    setSuperpower();
-    return;
-  }
+  return superpowerAcquired;
 }
 
 function isCollision(rect1, rect2) {
@@ -151,7 +165,8 @@ function handleLose() {
   dieSound.play();
   isPlaying = false;
   isSuperpowerActive = false;
-  clearTimeout(superpowerTimeout);
+  isInvincible = false;
+  powerChooser = null;
   // Avoid restarting the game right after you lose
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, { once: true });
