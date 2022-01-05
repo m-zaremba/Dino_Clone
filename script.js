@@ -11,6 +11,7 @@ const startScreenElement = document.querySelector("[data-start-screen]");
 const hiScoreElement = document.querySelector("[data-hiscore]");
 const dieSound = document.querySelector("[data-die]");
 const jumpSound = document.querySelector("[data-jump]");
+const powerIndicatorElement = document.querySelector("[data-power-info]");
 
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 30;
@@ -21,7 +22,7 @@ let speedScale;
 let score;
 let hiScore;
 let isPlaying = false;
-let isSuperpowerActive = false;
+let isPowerjumpActive = false;
 let isInvincible = false;
 let powerChooser = null;
 
@@ -32,11 +33,11 @@ function update(time) {
     return;
   }
   const delta = time - lastTime;
-
+  
   lastTime = time;
 
   updateGround(delta, speedScale);
-  updateDino(delta, speedScale, isSuperpowerActive);
+  updateDino(delta, speedScale, isPowerjumpActive, isInvincible);
   updateCactus(delta, speedScale);
   updateCloud(delta, speedScale);
   updatePtero(delta, speedScale);
@@ -44,8 +45,8 @@ function update(time) {
   updateSpeedScale(delta);
   updateScore(delta);
   if (acquireSuperpower()) {
-    setSuperpower()
-  };
+    setSuperpower();
+  }
   if (checkLose()) return handleLose();
   window.requestAnimationFrame(update);
 }
@@ -57,7 +58,7 @@ function updateSpeedScale(delta) {
 // Format score to consist of 5 digits with leading zeros and show it on screen
 function formatScoreValue(element, score) {
   element.textContent =
-    (element === hiScoreElement ? "HI: " : "SCORE: ") +
+    (element === hiScoreElement ? "HI:" : "") +
     Math.floor(score).toString().padStart(5, "0");
 }
 
@@ -120,32 +121,37 @@ function checkLose() {
 }
 
 function cancelSuperpower() {
-  isSuperpowerActive = false;
+  isPowerjumpActive = false;
   isInvincible = false;
   powerChooser = null;
+  powerIndicatorElement.classList.add("hide");
 }
 
 function setSuperpower() {
   if (powerChooser === null) {
-  powerChooser = Math.round(Math.random());
-  };
+    powerChooser = Math.round(Math.random());
+  }
 
   if (powerChooser === 0) {
-    isSuperpowerActive = true;
+    isPowerjumpActive = true;
+    powerIndicatorElement.textContent = "POWERJUMP";
   } else {
     isInvincible = true;
-  };
-  
+    powerIndicatorElement.textContent = "INVINCIBLE";
+  }
+  powerIndicatorElement.classList.remove("hide");
   setSuperpowerTimeout();
-};
+}
 
 function setSuperpowerTimeout() {
-  setTimeout(cancelSuperpower, 5000);
+  setTimeout(cancelSuperpower, 10000);
 }
 
 function acquireSuperpower() {
   const dinoRect = getDinoRect();
-  const superpowerAcquired = getPowerRect().some((powerRect) => isCollision(powerRect, dinoRect));
+  const superpowerAcquired = getPowerRect().some((powerRect) =>
+    isCollision(powerRect, dinoRect)
+  );
   return superpowerAcquired;
 }
 
@@ -164,13 +170,15 @@ function handleLose() {
   loadHiScore();
   dieSound.play();
   isPlaying = false;
-  isSuperpowerActive = false;
+  isPowerjumpActive = false;
   isInvincible = false;
   powerChooser = null;
+  powerIndicatorElement.classList.add("hide");
   // Avoid restarting the game right after you lose
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, { once: true });
     window.addEventListener("touchstart", handleStart, { once: true });
+    startScreenElement.textContent = "PRESS ANY KEY TO RESTART";
     startScreenElement.classList.remove("hide");
   }, 500);
 }

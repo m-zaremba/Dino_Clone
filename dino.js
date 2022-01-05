@@ -9,7 +9,8 @@ const DINO_FRAME_COUNT = 2;
 const FRAME_TIME = 100;
 
 let isJumping;
-let isPowerjumpActive;
+let isSuperjumpActive = false;
+let isImmortalActive = false;
 let superJumpCounter = 2;
 let isBowing;
 let dinoFrame;
@@ -35,29 +36,30 @@ export function setupDino() {
 }
 
 function handleKeydown(event) {
-  onJump(event, isPowerjumpActive);
+  onJump(event, isSuperjumpActive);
   handleBow(event);
 }
 
-export function updateDino(delta, speedScale, isSuperpowerActive) {
+export function updateDino(delta, speedScale, isPowerjumpActive, isInvincible) {
   handleRunAndBow(delta, speedScale);
   handleJump(delta);
-  handleSuperpowers(isSuperpowerActive);
+  handleSuperpowers(isPowerjumpActive, isInvincible);
 }
 
-function handleSuperpowers (isSuperpowerActive) {
-  isPowerjumpActive = isSuperpowerActive;
+function handleSuperpowers (isPowerjumpActive, isInvincible) {
+  isSuperjumpActive = isPowerjumpActive;
+  isImmortalActive = isInvincible;
 }
 
 function handleRunAndBow(delta, speedScale) {
   if (isJumping) {
-    dinoElement.src = "img/dino-stationary.svg";
+    dinoElement.src = `img/dino-stationary${isSuperjumpActive ? "-powerjump" : isImmortalActive ? "-invincible" : ""}.svg`;
     return;
   }
 
   if (currentFrameTime >= FRAME_TIME) {
     dinoFrame = (dinoFrame + 1) % DINO_FRAME_COUNT; // Crete frame loop
-    dinoElement.src = `img/dino-${isBowing ? "bow" : "run"}-${dinoFrame}.svg`;
+    dinoElement.src = `img/dino-${isBowing ? "bow" : "run"}-${isSuperjumpActive ? "powerjump-" : isImmortalActive ? "invincible-" : ""}${dinoFrame}.svg`;
     currentFrameTime -= FRAME_TIME; // Reset animation frame value
   }
   currentFrameTime += delta * speedScale;
@@ -81,10 +83,10 @@ function superJumpCountUpdate () {
   superJumpCounter -= 1;
 }
 
-function onJump(event, isPowerjumpActive) {
+function onJump(event, isSuperjumpActive) {
   if (event.code !== "ArrowDown") {
-    if (isJumping && (!isPowerjumpActive || superJumpCounter <= 0)) return;
-    if (isPowerjumpActive) {
+    if (isJumping && (!isSuperjumpActive || superJumpCounter <= 0)) return;
+    if (isSuperjumpActive) {
       superJumpCountUpdate();
     }
 

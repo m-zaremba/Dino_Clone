@@ -28,24 +28,41 @@ body {
   top: 1vmin;
   right: 1vmin;
   text-align: left;
-  min-width: 25%;
+  min-width: 20%;
 }
 
 .hi-score {
   position: absolute;
   font-size: 3vmin;
   top: 1vmin;
-  right: 45vmin;
+  right: 25vmin;
+  text-align: left;
+  min-width: 25%;
+}
+
+.power-info {
+  position: absolute;
+  font-size: 3vmin;
+  top: 1vmin;
+  left: 2vmin;
   text-align: left;
   min-width: 25%;
 }
 
 .start-screen {
   position: absolute;
-  font-size: 4vmin;
+  width: 70%;
+  font-size: 3vmin;
+  text-align: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 10;
+  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}
+
+.power-image {
+  height: 4vmin;
 }
 
 .hide {
@@ -74,6 +91,7 @@ body {
   left: calc(var(--left) * 1%);
   height: calc(var(--height) * 1%);
   bottom: 0;
+  z-index: -1;
 }
 
 .cloud {
@@ -92,6 +110,7 @@ body {
   height: 30%;
   left: calc(var(--left) * 1%);
   bottom: calc(var(--bottom) * 1%);
+  z-index: -1;
 }
 
 .power {

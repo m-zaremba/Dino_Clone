@@ -1,8 +1,8 @@
 import { setCustomProperty, incrementCustomProperty, getCustomProperty } from "./updateCustomProperty.js";
 
 const SPEED = 0.06;
-const POWER_INTERVAL_MIN = 2000;
-const POWER_INTERVAL_MAX = 300000;
+const POWER_INTERVAL_MIN = 4000;
+const POWER_INTERVAL_MAX = 60000;
 const POWER_VELOCITY_MIN = 20;
 const POWER_VELOCITY_MAX = 42;
 const worldElement = document.querySelector("[data-world]");
