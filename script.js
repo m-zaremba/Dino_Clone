@@ -11,6 +11,7 @@ const startScreenElement = document.querySelector("[data-start-screen]");
 const hiScoreElement = document.querySelector("[data-hiscore]");
 const dieSound = document.querySelector("[data-die]");
 const jumpSound = document.querySelector("[data-jump]");
+const powerSound = document.querySelector("[data-power]");
 const powerIndicatorElement = document.querySelector("[data-power-info]");
 
 const WORLD_WIDTH = 100;
@@ -134,6 +135,7 @@ function cancelSuperpower() {
 }
 
 function setSuperpower() {
+  powerSound.play();
   if (powerChooser === null) {
     powerChooser = Math.round(Math.random());
   }
@@ -158,7 +160,11 @@ function showPowerStatus() {
 
 function updatePowerCountdown(delta) {
   powerCounter -= delta * 0.001;
-  console.log(powerCounter);
+
+  // Indicate with sound that the power time is running out
+  if (powerCounter <= 3) {
+    powerSound.play();
+  }
 }
 
 function acquireSuperpower() {
@@ -204,5 +210,6 @@ window.addEventListener("resize", setPixelToWorldScale);
 
 jumpSound.volume = 0.1;
 dieSound.volume = 0.1;
+powerSound.volume = 0.1;
 setPixelToWorldScale();
 loadHiScore();

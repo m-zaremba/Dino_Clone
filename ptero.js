@@ -3,7 +3,7 @@ import { incrementCustomProperty, getCustomProperty, setCustomProperty } from ".
 const worldElement = document.querySelector("[data-world]");
 
 const SPEED = 0.1;
-const PTERO_INTERVAL_MIN = 5000;
+const PTERO_INTERVAL_MIN = 7000;
 const PTERO_INTERVAL_MAX = 10000;
 const PTERO_ALTITUDE_MIN = 20;
 const PTERO_ALTITUDE_MAX = 70;
