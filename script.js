@@ -25,6 +25,7 @@ let isPlaying = false;
 let isPowerjumpActive = false;
 let isInvincible = false;
 let powerChooser = null;
+let powerCounter = 11;
 
 function update(time) {
   if (lastTime == null) {
@@ -47,6 +48,10 @@ function update(time) {
   if (acquireSuperpower()) {
     setSuperpower();
   }
+  if (isPowerjumpActive || isInvincible) {
+    updatePowerCountdown(delta);
+    showPowerStatus(powerChooser, powerCounter, isPowerjumpActive, isInvincible);
+  };
   if (checkLose()) return handleLose();
   window.requestAnimationFrame(update);
 }
@@ -124,6 +129,7 @@ function cancelSuperpower() {
   isPowerjumpActive = false;
   isInvincible = false;
   powerChooser = null;
+  powerCounter = 11;
   powerIndicatorElement.classList.add("hide");
 }
 
@@ -134,17 +140,25 @@ function setSuperpower() {
 
   if (powerChooser === 0) {
     isPowerjumpActive = true;
-    powerIndicatorElement.textContent = "POWERJUMP";
   } else {
     isInvincible = true;
-    powerIndicatorElement.textContent = "INVINCIBLE";
   }
-  powerIndicatorElement.classList.remove("hide");
-  setSuperpowerTimeout();
 }
 
-function setSuperpowerTimeout() {
-  setTimeout(cancelSuperpower, 10000);
+function showPowerStatus() {
+  powerIndicatorElement.textContent = `${isPowerjumpActive ? "POWERJUMP" : "INVINCIBLE"} ${Math.floor(powerCounter)}`;
+
+  powerIndicatorElement.classList.remove("hide");
+
+  // If below statement is not in showPowerStatus(), powerIndicatorElement won't hide after powers time up
+  if (powerCounter <= 0.3) {
+    cancelSuperpower();
+  }
+}
+
+function updatePowerCountdown(delta) {
+  powerCounter -= delta * 0.001;
+  console.log(powerCounter);
 }
 
 function acquireSuperpower() {
@@ -173,6 +187,7 @@ function handleLose() {
   isPowerjumpActive = false;
   isInvincible = false;
   powerChooser = null;
+  powerCounter = 11;
   powerIndicatorElement.classList.add("hide");
   // Avoid restarting the game right after you lose
   setTimeout(() => {
