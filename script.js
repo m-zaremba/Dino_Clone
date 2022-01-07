@@ -21,7 +21,7 @@ const SPEED_SCALE_INCREASE = 0.00001;
 let lastTime;
 let speedScale;
 let score;
-let hiScore;
+let hiScore = 0;
 let isPlaying = false;
 let isPowerjumpActive = false;
 let isInvincible = false;
@@ -152,7 +152,7 @@ function showPowerStatus() {
 
   powerIndicatorElement.classList.remove("hide");
 
-  // If below statement is not in showPowerStatus(), powerIndicatorElement won't hide after powers time up
+  // If below statement is not in showPowerStatus(), powerIndicatorElement won't hide after power time is up
   if (powerCounter <= 0.3) {
     cancelSuperpower();
   }
@@ -160,9 +160,15 @@ function showPowerStatus() {
 
 function updatePowerCountdown(delta) {
   powerCounter -= delta * 0.001;
+  console.log(powerCounter);
 
   // Indicate with sound that the power time is running out
-  if (powerCounter <= 3) {
+  if (
+    (powerCounter < 3.9 && powerCounter > 3.8) || 
+    (powerCounter < 2.9 && powerCounter > 2.8) || 
+    (powerCounter < 1.9 && powerCounter > 1.8) || 
+    (powerCounter < 0.9 && powerCounter > 0.8)
+    ) {
     powerSound.play();
   }
 }
@@ -188,14 +194,13 @@ function handleLose() {
   setDinoLose();
   saveHiScore();
   loadHiScore();
-  dieSound.play();
   isPlaying = false;
   isPowerjumpActive = false;
   isInvincible = false;
   powerChooser = null;
   powerCounter = 11;
   powerIndicatorElement.classList.add("hide");
-  // Avoid restarting the game right after you lose
+  // Avoid restarting the game by keypress right after you lose
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, { once: true });
     window.addEventListener("touchstart", handleStart, { once: true });
@@ -209,7 +214,7 @@ window.addEventListener("touchstart", handleStart, { once: true });
 window.addEventListener("resize", setPixelToWorldScale);
 
 jumpSound.volume = 0.1;
-dieSound.volume = 0.1;
 powerSound.volume = 0.1;
+dieSound.volume = 0.1;
 setPixelToWorldScale();
 loadHiScore();

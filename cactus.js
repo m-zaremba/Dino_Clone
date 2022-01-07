@@ -27,14 +27,14 @@ export function updateCactus(delta, speedScale) {
 
   if (nextCactusTime <= 0) {
     createCactus();
-    // Adjust cactus appear rate for increased speed of the game
+    // Adjust cactus appearance rate to the increasing speed of the game
     nextCactusTime = randomNumberBetween(CACTUS_INTERVAL_MIN, CACTUS_INTERVAL_MAX) / speedScale; 
   };
-  // 'Countdown' till next cactus appears on screen
+  // 'Countdown' till next cactus appears on the screen
   nextCactusTime -= delta;
 }
 
-// Get dimensions of the cactus
+// Get an array of cactus dimensions
 export function getCactusRects() {
   return [...document.querySelectorAll("[data-cactus]")].map((cactus) => {
     return cactus.getBoundingClientRect();

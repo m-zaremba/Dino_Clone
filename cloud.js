@@ -13,7 +13,7 @@ let nextCloudTime;
 
 export function setupCloud() {
   nextCloudTime = CLOUD_INTERVAL_MIN;
-  // Remove all clouds at game restart
+  // Remove all clouds when restarting the game
   document.querySelectorAll("[data-cloud]").forEach((cloud) => {
     cloud.remove();
   });
@@ -29,10 +29,12 @@ export function updateCloud(delta, speedScale) {
 
   if (nextCloudTime <= 0) {
     createCloud();
+    // Adjust clouds appearance rate to the increasing speed of the game
     nextCloudTime =
-      randomNumberBetween(CLOUD_INTERVAL_MIN, CLOUD_INTERVAL_MAX) / speedScale; // Adjust cloud appear rate for increased speed of the game
+      randomNumberBetween(CLOUD_INTERVAL_MIN, CLOUD_INTERVAL_MAX) / speedScale;
   }
-  nextCloudTime -= delta; // 'Countdown' till next cloud appears on screen
+  // 'Countdown' till next cloud appears on screen
+  nextCloudTime -= delta;
 }
 
 function createCloud() {

@@ -19,7 +19,7 @@ export function setupPtero() {
   currentFrameTime = 0;
 
   nextPteroTime = PTERO_INTERVAL_MIN;
-  // Remove all clouds at game restart
+  // Remove all pteros at game restart
   document.querySelectorAll("[data-ptero]").forEach((ptero) => {
     ptero.remove();
   });
@@ -36,10 +36,10 @@ export function updatePtero(delta, speedScale) {
 
   if (nextPteroTime <= 0) {
     createPtero();
-    // Adjust ptero appear rate for increased speed of the game
+    // Adjust ptero appearance rate to the increasing speed of the game
     nextPteroTime = randomNumberBetween(PTERO_INTERVAL_MIN, PTERO_INTERVAL_MAX) / speedScale; 
   }
-  // 'Countdown' till next ptero appears on screen
+  // 'Countdown' till next ptero appears on the screen
   nextPteroTime -= delta;
 }
 
@@ -55,9 +55,9 @@ function createPtero() {
 
 function handleFly(ptero, delta, speedScale) {
   if (currentFrameTime >= FRAME_TIME) {
-    pteroFrame = (pteroFrame + 1) % PTERO_FRAME_COUNT; // Crete frame loop
+    pteroFrame = (pteroFrame + 1) % PTERO_FRAME_COUNT; // Crete ptero animation frames loop
     ptero.src = `img/ptero-${pteroFrame}.svg`;
-    currentFrameTime -= FRAME_TIME; // Reset animation frame value
+    currentFrameTime -= FRAME_TIME;
   }
   currentFrameTime += delta * speedScale;
 }

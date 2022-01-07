@@ -2,6 +2,7 @@ import { incrementCustomProperty, getCustomProperty, setCustomProperty } from ".
 
 const dinoElement = document.querySelector("[data-dino]");
 const jumpSound = document.querySelector("[data-jump]");
+const dieSound = document.querySelector("[data-die]");
 
 const JUMP_SPEED = 0.45;
 const GRAVITY = 0.0018;
@@ -27,12 +28,12 @@ export function setupDino() {
 
   // Remove event listeners after game over/restart
   document.removeEventListener("keyup", handleBow);
-  document.removeEventListener("touchstart", onJump);
+  document.removeEventListener("touchstart", handleKeydown);
   document.removeEventListener("keydown", handleKeydown);
 
   document.addEventListener("keydown", handleKeydown);
   document.addEventListener("keyup", handleBow);
-  document.addEventListener("touchstart", onJump);
+  document.addEventListener("touchstart", handleKeydown);
 }
 
 function handleKeydown(event) {
@@ -58,9 +59,9 @@ function handleRunAndBow(delta, speedScale) {
   }
 
   if (currentFrameTime >= FRAME_TIME) {
-    dinoFrame = (dinoFrame + 1) % DINO_FRAME_COUNT; // Crete frame loop
+    dinoFrame = (dinoFrame + 1) % DINO_FRAME_COUNT; // Crete dino animation frames loop
     dinoElement.src = `img/dino-${isBowing ? "bow" : "run"}-${isSuperjumpActive ? "powerjump-" : isImmortalActive ? "invincible-" : ""}${dinoFrame}.svg`;
-    currentFrameTime -= FRAME_TIME; // Reset animation frame value
+    currentFrameTime -= FRAME_TIME;
   }
   currentFrameTime += delta * speedScale;
 }
@@ -110,6 +111,7 @@ export function getDinoRect() {
 
 export function setDinoLose() {
   dinoElement.src = "img/dino-lose.svg";
-  // Adjust superJumpCounter for restart keypress
+  dieSound.play();
+  // Adjust superJumpCounter for keypress needed to restart the game
   superJumpCounter = 3;
 }

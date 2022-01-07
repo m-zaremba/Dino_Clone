@@ -1,7 +1,7 @@
 import { setCustomProperty, incrementCustomProperty, getCustomProperty } from "./updateCustomProperty.js";
 
 const SPEED = 0.06;
-const POWER_INTERVAL_MIN = 10000;
+const POWER_INTERVAL_MIN = 15000;
 const POWER_INTERVAL_MAX = 30000;
 const POWER_VELOCITY_MIN = 20;
 const POWER_VELOCITY_MAX = 42;
