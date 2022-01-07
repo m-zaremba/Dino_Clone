@@ -12,4 +12,4 @@ A clone of the cult Dino browser game written in VanillaJS. With pterosaur, soun
 
 Have fun.
 
-Live Demo available >>> here <<<
+Live Demo available >>> [here](https://m-zaremba.github.io/Dino_Clone/) <<<
